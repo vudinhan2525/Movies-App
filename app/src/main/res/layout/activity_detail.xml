@@ -167,6 +167,7 @@
                 android:text="Summery"
                 android:textColor="@color/white"
                 android:textSize="16dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.218"
                 app:layout_constraintStart_toStartOf="parent"
@@ -235,6 +236,7 @@
     </ScrollView>
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/detailLoding"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
