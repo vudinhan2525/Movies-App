@@ -10,15 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.mymovies.Domain.ImageData;
 import com.example.mymovies.R;
 
 import java.util.List;
 
 public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder> {
-    List<String> images;
+    List<ImageData> images;
     Context context;
 
-    public ImageListAdapter(List<String> images) {
+    public ImageListAdapter(List<ImageData> images) {
         this.images = images;
     }
 

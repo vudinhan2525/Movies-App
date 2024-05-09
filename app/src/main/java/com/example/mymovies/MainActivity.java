@@ -5,7 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import java.util.ArrayList;
+import java.util.List;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -19,6 +20,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mymovies.Adapter.FilmListAdapter;
+import com.example.mymovies.Adapter.ImageListAdapter;
+import com.example.mymovies.Domain.ImageData;
 import com.google.gson.Gson;
 
 import com.example.mymovies.Domain.ListFilm;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest, mStringRequest2;
     private ProgressBar loading1, loading2;
+    private List<ImageData> imageDataList;
 
     Connection connection;
     @Override
@@ -59,19 +63,24 @@ public class MainActivity extends AppCompatActivity {
 //            loading1.setVisibility(View.GONE);
 //        } );
 //        mRequestQueue.add(mStringRequest);
+        imageDataList = new ArrayList<>();
+
         ConnectionDB db = new ConnectionDB();
         connection = db.conclass();
         TextView name = findViewById(R.id.textViewLabel);
-        TextView name = findViewById(R.id.)
+
         if (db != null) {
             try {
-                String query = "SELECT * FROM Movies";
+                String query = "SELECT mImage FROM Movies";
                 Statement smt = connection.createStatement();
                 ResultSet set = smt.executeQuery(query);
                 while (set.next()) {
-                    Log.i("test",set.getString(2));
+                    String imagePath = set.getString("mImage");
+                    imageDataList.add(new ImageData(imagePath));
                 }
                 connection.close();
+                adapterNewMovies = new ImageListAdapter(imageDataList);
+                recyclerViewNewMovies.setAdapter(adapterNewMovies);
             } catch (Exception ex) {
                 System.out.println(ex);
             }
