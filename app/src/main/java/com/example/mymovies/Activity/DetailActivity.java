@@ -45,32 +45,33 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void sendRequest() {
-        mRequestQueue = Volley.newRequestQueue(this);
-        progressBar.setVisibility(View.VISIBLE);
-        scrollView.setVisibility(View.GONE);
-        mStringRequest = new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies/" + idFilm, response -> {
-            Gson gson = new Gson();
-            progressBar.setVisibility(View.GONE);
-            scrollView.setVisibility(View.VISIBLE);
-            FilmItem items = gson.fromJson(response,FilmItem.class);
-            Glide.with(DetailActivity.this).load(items.getPoster()).into(pic1);
-            Glide.with(DetailActivity.this).load(items.getPoster()).into(pic2);
-            titleTxt.setText(items.getTitle());
-            movieRateTxt.setText(items.getRated());
-            movieTimeTxt.setText(items.getRuntime());
-            movieDateTxt.setText(items.getReleased());
-            movieSummaryInfo.setText(items.getPlot());
-            movieActorsInfo.setText(items.getActors());
-            if(items.getImages() != null)
-            {
-                adapterImgList = new ImageListAdapter(items.getImages());
-                recyclerView.setAdapter(adapterImgList);
-            }
-        }, error -> {
-            progressBar.setVisibility(View.GONE);
-            Log.i("uilover", "onErrorResponse" + error.toString());
-        });
-        mRequestQueue.add(mStringRequest);
+          "SELECT * FROM MOVIES WHERE mVI = 0"
+//        mRequestQueue = Volley.newRequestQueue(this);
+//        progressBar.setVisibility(View.VISIBLE);
+//        scrollView.setVisibility(View.GONE);
+//        mStringRequest = new StringRequest(Request.Method.GET, "https://moviesapi.ir/api/v1/movies/" + idFilm, response -> {
+//            Gson gson = new Gson();
+//            progressBar.setVisibility(View.GONE);
+//            scrollView.setVisibility(View.VISIBLE);
+//            FilmItem items = gson.fromJson(response,FilmItem.class);
+//            Glide.with(DetailActivity.this).load(items.getPoster()).into(pic1);
+//            Glide.with(DetailActivity.this).load(items.getPoster()).into(pic2);
+//            titleTxt.setText(items.getTitle());
+//            movieRateTxt.setText(items.getRated());
+//            movieTimeTxt.setText(items.getRuntime());
+//            movieDateTxt.setText(items.getReleased());
+//            movieSummaryInfo.setText(items.getPlot());
+//            movieActorsInfo.setText(items.getActors());
+//            if(items.getImages() != null)
+//            {
+//                adapterImgList = new ImageListAdapter(items.getImages());
+//                recyclerView.setAdapter(adapterImgList);
+//            }
+//        }, error -> {
+//            progressBar.setVisibility(View.GONE);
+//            Log.i("uilover", "onErrorResponse" + error.toString());
+//        });
+//        mRequestQueue.add(mStringRequest);
     }
 
     private void initView() {

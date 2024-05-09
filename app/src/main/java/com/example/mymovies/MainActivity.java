@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,12 +23,18 @@ import com.google.gson.Gson;
 
 import com.example.mymovies.Domain.ListFilm;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterNewMovies, adapterUpComing;
     private RecyclerView recyclerViewNewMovies, recyclerViewUpComing;
     private RequestQueue mRequestQueue;
     private StringRequest mStringRequest, mStringRequest2;
     private ProgressBar loading1, loading2;
+
+    Connection connection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,25 +42,43 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         sendRequest1();
-        sendRequest2();
+        //sendRequest2();
     }
 
     private void sendRequest1() {
-        mRequestQueue = Volley.newRequestQueue(this);
-        loading1.setVisibility(View.VISIBLE);
-        mStringRequest = new StringRequest(Request.Method.GET,"https://moviesapi.ir/api/v1/movies?page=1", response -> {
-            Gson gson = new Gson();
-            loading1.setVisibility(View.GONE);
-            ListFilm items = gson.fromJson(response, ListFilm.class);
-            adapterNewMovies = new FilmListAdapter(items);
-            recyclerViewNewMovies.setAdapter(adapterNewMovies);
-        }, error -> {
-            Log.i("MyMovies", "sendRequest1: " + error.toString());
-            loading1.setVisibility(View.GONE);
-        } );
-        mRequestQueue.add(mStringRequest);
+//        mRequestQueue = Volley.newRequestQueue(this);
+//        loading1.setVisibility(View.VISIBLE);
+//        mStringRequest = new StringRequest(Request.Method.GET,"https://moviesapi.ir/api/v1/movies?page=1", response -> {
+//            Gson gson = new Gson();
+//            loading1.setVisibility(View.GONE);
+//            ListFilm items = gson.fromJson(response, ListFilm.class);
+//            adapterNewMovies = new FilmListAdapter(items);
+//            recyclerViewNewMovies.setAdapter(adapterNewMovies);
+//        }, error -> {
+//            Log.i("MyMovies", "sendRequest1: " + error.toString());
+//            loading1.setVisibility(View.GONE);
+//        } );
+//        mRequestQueue.add(mStringRequest);
+        ConnectionDB db = new ConnectionDB();
+        connection = db.conclass();
+        TextView name = findViewById(R.id.textViewLabel);
+        TextView name = findViewById(R.id.)
+        if (db != null) {
+            try {
+                String query = "SELECT * FROM Movies";
+                Statement smt = connection.createStatement();
+                ResultSet set = smt.executeQuery(query);
+                while (set.next()) {
+                    Log.i("test",set.getString(2));
+                }
+                connection.close();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
     }
-    private void sendRequest2() {
+
+    /*private void sendRequest2() {
         mRequestQueue = Volley.newRequestQueue(this);
         loading2.setVisibility(View.VISIBLE);
         mStringRequest2 = new StringRequest(Request.Method.GET,"https://moviesapi.ir/api/v1/movies?page=2", response -> {
@@ -66,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             loading2.setVisibility(View.GONE);
         } );
         mRequestQueue.add(mStringRequest2);
-    }
+    }*/
 
     private void initView()
     {

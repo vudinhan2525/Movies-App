@@ -37,6 +37,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.code.gson:gson:2.9.1")
     implementation ("com.android.volley:volley:1.2.1")
+    implementation(files("D:/Hoc/movie app/Movies-App/app/libs/jtds-1.3.1.jar"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
