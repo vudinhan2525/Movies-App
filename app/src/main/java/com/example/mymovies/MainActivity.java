@@ -7,11 +7,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,11 +17,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mymovies.Adapter.FilmListAdapter;
-import com.example.mymovies.Adapter.ImageListAdapter;
+import com.example.mymovies.Adapter.ListFilmAdapter;
+import com.example.mymovies.Domain.Film;
 import com.example.mymovies.Domain.ImageData;
-import com.google.gson.Gson;
-
 import com.example.mymovies.Domain.ListFilm;
+import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private StringRequest mStringRequest, mStringRequest2;
     private ProgressBar loading1, loading2;
     private List<ImageData> imageDataList;
-
+    private List<Film> filmList1;
+    private ListFilmAdapter listFilmAdapter;
     Connection connection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,61 +44,68 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         sendRequest1();
-        //sendRequest2();
+        sendRequest2();
     }
 
     private void sendRequest1() {
-//        mRequestQueue = Volley.newRequestQueue(this);
-//        loading1.setVisibility(View.VISIBLE);
-//        mStringRequest = new StringRequest(Request.Method.GET,"https://moviesapi.ir/api/v1/movies?page=1", response -> {
-//            Gson gson = new Gson();
-//            loading1.setVisibility(View.GONE);
-//            ListFilm items = gson.fromJson(response, ListFilm.class);
-//            adapterNewMovies = new FilmListAdapter(items);
-//            recyclerViewNewMovies.setAdapter(adapterNewMovies);
-//        }, error -> {
-//            Log.i("MyMovies", "sendRequest1: " + error.toString());
-//            loading1.setVisibility(View.GONE);
-//        } );
-//        mRequestQueue.add(mStringRequest);
-        imageDataList = new ArrayList<>();
-
         ConnectionDB db = new ConnectionDB();
         connection = db.conclass();
         TextView name = findViewById(R.id.textViewLabel);
-
         if (db != null) {
             try {
-                String query = "SELECT mImage FROM Movies";
+                String query = "SELECT * FROM Movies";
                 Statement smt = connection.createStatement();
                 ResultSet set = smt.executeQuery(query);
+                filmList1 = new ArrayList<>();
                 while (set.next()) {
-                    String imagePath = set.getString("mImage");
-                    imageDataList.add(new ImageData(imagePath));
+                    int mId = set.getInt("mId");
+                    String mImage = set.getString("mImage");
+                    String mName = set.getString("mName");
+                    int mRating = set.getInt("mRating");
+                    String mScore = Integer.toString(mRating);
+                    Film f2 = new Film(mId,mName,mScore,mImage);
+                    filmList1.add(f2);
                 }
                 connection.close();
-                adapterNewMovies = new ImageListAdapter(imageDataList);
-                recyclerViewNewMovies.setAdapter(adapterNewMovies);
+                listFilmAdapter = new ListFilmAdapter(filmList1);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewNewMovies.setLayoutManager(linearLayoutManager);
+                recyclerViewNewMovies.setAdapter(listFilmAdapter);
             } catch (Exception ex) {
                 System.out.println(ex);
             }
         }
     }
 
-    /*private void sendRequest2() {
-        mRequestQueue = Volley.newRequestQueue(this);
-        loading2.setVisibility(View.VISIBLE);
-        mStringRequest2 = new StringRequest(Request.Method.GET,"https://moviesapi.ir/api/v1/movies?page=2", response -> {
-            Gson gson = new Gson();
-            loading2.setVisibility(View.GONE);
-            ListFilm items = gson.fromJson(response, ListFilm.class);
-            adapterUpComing = new FilmListAdapter(items);
-            recyclerViewUpComing.setAdapter(adapterUpComing);
-        }, error -> {
-            loading2.setVisibility(View.GONE);
-        } );
-        mRequestQueue.add(mStringRequest2);
-    }*/
+    private void sendRequest2() {
+        ConnectionDB db = new ConnectionDB();
+        connection = db.conclass();
+        TextView name = findViewById(R.id.textViewLabel);
+        if (db != null) {
+            try {
+                String query = "SELECT * FROM Movies";
+                Statement smt = connection.createStatement();
+                ResultSet set = smt.executeQuery(query);
+                filmList1 = new ArrayList<>();
+                while (set.next()) {
+                    int mId = set.getInt("mId");
+                    String mImage = set.getString("mImage");
+                    String mName = set.getString("mName");
+                    int mRating = set.getInt("mRating");
+                    String mScore = Integer.toString(mRating);
+                    Film f2 = new Film(mId,mName,mScore,mImage);
+                    filmList1.add(f2);
+                }
+                connection.close();
+                listFilmAdapter = new ListFilmAdapter(filmList1);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerViewUpComing.setLayoutManager(linearLayoutManager);
+                recyclerViewUpComing.setAdapter(listFilmAdapter);
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+    }
 
     private void initView()
     {
@@ -110,5 +115,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewUpComing.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         loading1 = findViewById(R.id.loading1);
         loading2 = findViewById(R.id.loading2);
+
     }
 }

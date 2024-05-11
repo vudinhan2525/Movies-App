@@ -41,11 +41,17 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         idFilm = getIntent().getIntExtra("id", 0);
         initView();
-        sendRequest();
+        Log.i("id", String.valueOf(idFilm));
+
+        //sendRequest();
+    }
+    private void sendRequest()
+    {
+
     }
 
-    private void sendRequest() {
-          "SELECT * FROM MOVIES WHERE mVI = 0"
+//    private void sendRequest() {
+//          //"SELECT * FROM MOVIES WHERE mVI = 0"
 //        mRequestQueue = Volley.newRequestQueue(this);
 //        progressBar.setVisibility(View.VISIBLE);
 //        scrollView.setVisibility(View.GONE);
@@ -72,7 +78,7 @@ public class DetailActivity extends AppCompatActivity {
 //            Log.i("uilover", "onErrorResponse" + error.toString());
 //        });
 //        mRequestQueue.add(mStringRequest);
-    }
+//    }
 
     private void initView() {
         titleTxt = findViewById(R.id.movieNameTxt);

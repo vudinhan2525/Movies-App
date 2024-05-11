@@ -1,0 +1,2 @@
+Trong file có một class ConnectionDB. Mọi người muốn kết nối thì vào đó xem.
+Có một Database sẵn trong Git. mn vào thêm thông tin từ note API vào.
