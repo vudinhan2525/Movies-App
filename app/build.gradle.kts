@@ -26,6 +26,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -38,6 +41,9 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.9.1")
     implementation ("com.android.volley:volley:1.2.1")
     implementation(files("D:/Hoc/movie app/Movies-App/app/libs/jtds-1.3.1.jar"))
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

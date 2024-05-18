@@ -1,8 +1,12 @@
 package com.example.mymovies;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -12,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -27,6 +30,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapterNewMovies, adapterUpComing;
     private RecyclerView recyclerViewNewMovies, recyclerViewUpComing;
@@ -37,11 +41,31 @@ public class MainActivity extends AppCompatActivity {
     private List<Film> filmList1;
     private ListFilmAdapter listFilmAdapter;
     Connection connection;
+
+    private EditText editTextSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EditText searchEditText = findViewById(R.id.editTextText);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString();
+                if (!query.isEmpty()) {
+                    Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
+                    intent.putExtra("QUERY", query);
+                    startActivity(intent);
+                }
+            }
+        });
         initView();
         sendRequest1();
         sendRequest2();
