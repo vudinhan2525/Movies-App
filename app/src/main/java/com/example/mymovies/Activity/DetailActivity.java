@@ -3,6 +3,8 @@ package com.example.mymovies.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -43,7 +45,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView pic2, backImg, pic3;
     private RecyclerView.Adapter adapterImgList, imagesRecyclerView;
     private RecyclerView recyclerView;
-
+    WebView wv;
    // private List<Film> filmList1;
    // private ListFilmAdapter listFilmAdapter;
     Connection connection;
@@ -57,6 +59,9 @@ public class DetailActivity extends AppCompatActivity {
         Log.i("id", String.valueOf(idFilm));
 
         sendRequest();
+
+
+
     }
 
 
@@ -108,6 +113,10 @@ public class DetailActivity extends AppCompatActivity {
                     movieSummaryInfo.setText(set.getString("mDescription"));
                     movieActorsInfo.setText(set.getString("mActors"));
 
+                    String video = set.getString("mUrlVideo");
+                    wv.loadData(video,"text/html","utf-8");
+                    wv.getSettings().setJavaScriptEnabled(true);
+                    wv.setWebChromeClient(new WebChromeClient());
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -132,7 +141,7 @@ public class DetailActivity extends AppCompatActivity {
         backImg = findViewById(R.id.backImg);
         //recyclerView = findViewById(R.id.imagesRecyclerView);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
+        wv = findViewById(R.id.mainVideo);
         backImg.setOnClickListener(v -> finish());
 
     }

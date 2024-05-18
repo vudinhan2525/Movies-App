@@ -16,7 +16,7 @@ public class ConnectionDB {
         //Trong sql server mn thêm một login qua sql server, kích hoạt security cho đăng nhập bằng sql
         //đặt username và password.
         //Khoa
-        String ip = "192.168.10.179", port = "1433", db = "MoviesApp", username = "KHOA", password = "147852369";
+        String ip = "192.168.10.78", port = "1433", db = "MoviesApp", username = "KHOA", password = "147852369";
         StrictMode.ThreadPolicy a = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(a);
         String connectURL = null;
