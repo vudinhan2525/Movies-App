@@ -97,11 +97,12 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/white" />
 
-                <ImageView
-                    android:id="@+id/imageView6"
+                <CheckBox
+                    android:id="@+id/likeCheckBox"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="@drawable/bg_circle_dark"
+                    android:button = "@drawable/selector_wishlist_item"
                     android:padding="8dp"
                     android:src="@drawable/fav"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -210,7 +211,7 @@
             <TextView
                 android:id="@+id/movieSummaryInfo"
                 android:layout_width="406dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:paddingLeft="15dp"

@@ -1,13 +1,19 @@
 package com.example.mymovies.Activity;
 
+import static java.lang.String.valueOf;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -24,9 +30,11 @@ import com.example.mymovies.Adapter.ListFilmAdapter;
 import com.example.mymovies.ConnectionDB;
 import com.example.mymovies.Domain.Film;
 import com.example.mymovies.Domain.FilmItem;
+import com.example.mymovies.MainActivity;
 import com.example.mymovies.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -40,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView titleTxt, movieRateTxt, movieTimeTxt, movieDateTxt, movieSummaryInfo, movieActorsInfo, genreTxt;
     private NestedScrollView scrollView;
+    private CheckBox likeCheckBox;
     private int idFilm;
     private ShapeableImageView pic1;
     private ImageView pic2, backImg, pic3;
@@ -55,13 +64,77 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         idFilm = getIntent().getIntExtra("id", 0);
+        int userId = getIntent().getIntExtra("userId", 0);
+
         initView();
-        Log.i("id", String.valueOf(idFilm));
+        Log.i("id", valueOf(idFilm));
 
         sendRequest();
 
+        // Initialize views
+        likeCheckBox = findViewById(R.id.likeCheckBox);
+        // Load liked status from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("liked_films", MODE_PRIVATE);
+        boolean isLiked = sharedPreferences.getBoolean("film_" + idFilm, false);
+        likeCheckBox.setChecked(isLiked);
 
+        // Handle like checkbox click
+        likeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Save liked status to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("film_" + idFilm, isChecked);
+            editor.apply();
+            String res = String.valueOf(isChecked);
+            ConnectionDB db = new ConnectionDB();
+            connection = db.conclass();
+            if(isChecked == true)
+            {
+                if (db != null) {
+                    try {
+                        String sqlQuery = "INSERT INTO UserLike(userId,filmId) VALUES(" + userId + "," + idFilm +")";
+                        Statement smt = connection.createStatement();
+                        ResultSet set = smt.executeQuery(sqlQuery);
+                        connection.close();
 
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                    Toast.makeText(DetailActivity.this,"liked!",Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                if (db != null) {
+                    try {
+                        String sqlQuery = "Delete From UserLike Where userId = " + userId + " and filmId = " + idFilm + ";";
+                        Statement smt = connection.createStatement();
+                        ResultSet set = smt.executeQuery(sqlQuery);
+                        connection.close();
+
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                    Toast.makeText(DetailActivity.this,"cancel liked!",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+        boolean fromLikedPage = getIntent().getBooleanExtra("fromLikedPage", false);
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fromLikedPage == true){
+                    Intent intent = new Intent(DetailActivity.this, FavoriteActivity.class);
+                    intent.putExtra("userId", userId);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                    intent.putExtra("USERID", userId);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -102,12 +175,13 @@ public class DetailActivity extends AppCompatActivity {
                 Statement smt = connection.createStatement();
                 ResultSet set = smt.executeQuery(query);
                 while (set.next()) {
-                    Glide.with(DetailActivity.this).load(set.getString("mImage")).into(pic1);
-                    Glide.with(DetailActivity.this).load(set.getString("mImage1")).into(pic2);
-                    Glide.with(DetailActivity.this).load(set.getString("mImage2")).into(pic3);
+                    Picasso.get().load(set.getString("mImage")).into(pic1);
+                    Picasso.get().load(set.getString("mImage1")).into(pic2);
+                    Picasso.get().load(set.getString("mImage2")).into(pic3);
+
                     titleTxt.setText(set.getString("mName"));
                     genreTxt.setText(set.getString("mGenre"));
-                    movieRateTxt.setText(String.valueOf(set.getInt("mRating")));
+                    movieRateTxt.setText(valueOf(set.getInt("mRating")));
                     movieTimeTxt.setText(set.getString("mDuration"));
                     movieDateTxt.setText(set.getString("mDate"));
                     movieSummaryInfo.setText(set.getString("mDescription"));
@@ -142,7 +216,8 @@ public class DetailActivity extends AppCompatActivity {
         //recyclerView = findViewById(R.id.imagesRecyclerView);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         wv = findViewById(R.id.mainVideo);
-        backImg.setOnClickListener(v -> finish());
+
+        //backImg.setOnClickListener(v -> finish());
 
     }
 

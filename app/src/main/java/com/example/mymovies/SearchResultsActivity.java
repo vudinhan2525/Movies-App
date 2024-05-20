@@ -1,7 +1,13 @@
 package com.example.mymovies;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,17 +25,31 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ListFilmAdapter listFilmAdapter;
     private List<Film> searchResultsList;
     private Connection connection;
-
+    private int userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
+        GridLayoutManager gridFind = new GridLayoutManager(this, 3);
         recyclerViewSearchResults = findViewById(R.id.recyclerViewSearchResults);
-        recyclerViewSearchResults.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewSearchResults.setLayoutManager(gridFind);
 
         String query = getIntent().getStringExtra("QUERY");
+        TextView text = findViewById(R.id.resultTxt);
+        text.setText("Result for: \"" + query + "\"");
+        userId = getIntent().getIntExtra("userId",0);
         fetchSearchResults(query);
+        ImageButton btn = findViewById(R.id.backBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchResultsActivity.this, MainActivity.class);
+                intent.putExtra("USERID", userId);
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void fetchSearchResults(String query) {
@@ -47,7 +67,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                     String mName = set.getString("mName");
                     int mRating = set.getInt("mRating");
                     String mScore = Integer.toString(mRating);
-                    Film film = new Film(mId, mName, mScore, mImage);
+                    Film film = new Film(mId, mName, mScore, mImage,userId);
                     searchResultsList.add(film);
                 }
                 connection.close();

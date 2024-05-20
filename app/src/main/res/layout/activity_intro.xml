@@ -90,9 +90,10 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="35dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2"
-                    tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="82dp" />
+                    tools:ignore="MissingConstraints" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

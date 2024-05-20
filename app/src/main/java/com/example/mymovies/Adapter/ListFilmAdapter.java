@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,17 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mymovies.Activity.DetailActivity;
 import com.example.mymovies.Domain.Film;
 import com.example.mymovies.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ListFilmAdapter extends  RecyclerView.Adapter<ListFilmAdapter.ListFilmHolder>{
     private List<Film> listFilm;
+
+
     public ListFilmAdapter(List<Film> listFilm){
         this.listFilm = listFilm;
     }
+
 
     @NonNull
     @Override
@@ -38,12 +44,17 @@ public class ListFilmAdapter extends  RecyclerView.Adapter<ListFilmAdapter.ListF
         }
         holder.scoreTxt.setText(film.score);
         holder.titleTxt.setText(film.title);
-        Glide.with(holder.itemView.getContext()).load(film.imageUrl).into(holder.pic);
+        Picasso.get().load(film.imageUrl).into(holder.pic);
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
             intent.putExtra("id",film.id);
+            intent.putExtra("userId",film.userId);
+            if(film.fromLikedPage == true){
+                intent.putExtra("fromLikedPage",film.fromLikedPage);
+            }
             holder.itemView.getContext().startActivity(intent);
         });
+
     }
 
     @Override
@@ -58,12 +69,15 @@ public class ListFilmAdapter extends  RecyclerView.Adapter<ListFilmAdapter.ListF
 
         TextView titleTxt, scoreTxt;
         ImageView pic;
+        CheckBox likeCheckBox;
         public ListFilmHolder(@NonNull View itemView) {
             super(itemView);
             titleTxt=itemView.findViewById(R.id.titleTxt);
             scoreTxt=itemView.findViewById(R.id.scoreTxt);
             pic = itemView.findViewById(R.id.pic);
+            likeCheckBox = itemView.findViewById(R.id.likeCheckBox);
         }
     }
+
 
 }

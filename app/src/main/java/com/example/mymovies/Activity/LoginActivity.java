@@ -41,7 +41,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(userEdt.getText().toString().isEmpty() || passEdt.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this,"Please fill your username and password!",Toast.LENGTH_SHORT).show();
                 }else if(userEdt.getText().toString().equals("test") && passEdt.getText().toString().equals("test")){
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("USERID", 1);
+                    startActivity(intent);
                 }
             }
         });
