@@ -48,20 +48,20 @@
                     app:layout_constraintVertical_bias="0.0"
                     app:shapeAppearanceOverlay="@style/CardView" />
 
-                <TextView
-                    android:id="@+id/genreTxt"
-                    android:layout_width="100dp"
-                    android:layout_height="80dp"
-                    android:layout_marginEnd="280dp"
-                    android:layout_marginBottom="80dp"
-                    android:maxLines="2"
-                    android:text=""
-                    android:textAlignment="textStart"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/genreTxt"-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="80dp"-->
+<!--                    android:layout_marginEnd="280dp"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:text=""-->
+<!--                    android:textAlignment="textStart"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="20sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="1.0"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <!--                <TextView-->
                 <!--                    android:id="@+id/GenreTxt"-->
@@ -97,6 +97,20 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/white" />
 
+                <TextView
+                    android:id="@+id/genreTxt"
+                    android:layout_width="308dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="40dp"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
                 <CheckBox
                     android:id="@+id/likeCheckBox"
                     android:layout_width="35dp"
@@ -304,9 +318,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="286dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout125">
@@ -325,11 +340,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="wrap_content"
+
                     app:layout_constraintTop_toBottomOf="@+id/textViewLabel"
                     >
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/view1"
+                        android:id="@+id/relatedFilm"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
@@ -337,7 +353,6 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:layout_marginTop="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"

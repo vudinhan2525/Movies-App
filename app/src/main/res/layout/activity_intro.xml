@@ -32,18 +32,20 @@
                     android:id="@+id/imageView7"
                     android:layout_width="349dp"
                     android:layout_height="360dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/circle_gradient"
                     tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="33dp"
                     tools:layout_editor_absoluteY="84dp" />
 
                 <ImageView
                     android:id="@+id/imageView8"
                     android:layout_width="345dp"
                     android:layout_height="428dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:srcCompat="@drawable/woman"
                     tools:ignore="MissingConstraints"
-                    tools:layout_editor_absoluteX="37dp"
                     tools:layout_editor_absoluteY="35dp" />
 
                 <TextView

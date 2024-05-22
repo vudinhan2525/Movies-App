@@ -4,16 +4,21 @@ import static java.lang.String.valueOf;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -54,17 +59,21 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView pic2, backImg, pic3;
     private RecyclerView.Adapter adapterImgList, imagesRecyclerView;
     private RecyclerView recyclerView;
+    private int userId;
+    private ListFilmAdapter listFilmAdapter;
     WebView wv;
+    VideoView vw;
    // private List<Film> filmList1;
    // private ListFilmAdapter listFilmAdapter;
     Connection connection;
+    private List<Film> RelatedFilmList;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         idFilm = getIntent().getIntExtra("id", 0);
-        int userId = getIntent().getIntExtra("userId", 0);
+        userId = getIntent().getIntExtra("userId", 0);
 
         initView();
         Log.i("id", valueOf(idFilm));
@@ -135,9 +144,52 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+        fetchRelatedResults();
     }
 
+    private void fetchRelatedResults() {
+        ConnectionDB db = new ConnectionDB();
+        connection = db.conclass();
+        String[] genre = genreTxt.getText().toString().split(",");
+        StringBuilder sqlQuery = new StringBuilder("SELECT * FROM Movies WHERE mGenre ");
+        for (int i = 0; i < genre.length; i++) {
+           if(i == 0){
+               String query = "LIKE '%" + genre[i] + "%'";
+               sqlQuery.append(query);
+           }
+           else{
+               String query = " OR mGenre LIKE '%" + genre[i] + "%'";
+               sqlQuery.append(query);
+           }
 
+        }
+
+        if (db != null) {
+            try {
+
+                Statement smt = connection.createStatement();
+                ResultSet set = smt.executeQuery(sqlQuery.toString());
+                RelatedFilmList = new ArrayList<>();
+                while (set.next()) {
+                    int mId = set.getInt("mId");
+                    String mImage = set.getString("mImage");
+                    String mName = set.getString("mName");
+                    int mRating = set.getInt("mRating");
+                    String mScore = Integer.toString(mRating);
+                    Film film = new Film(mId, mName, mScore, mImage,userId);
+                    RelatedFilmList.add(film);
+                }
+                connection.close();
+                listFilmAdapter = new ListFilmAdapter(RelatedFilmList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                RecyclerView recyclerViewRelatedResults = findViewById(R.id.relatedFilm);
+                recyclerViewRelatedResults.setLayoutManager(linearLayoutManager);
+                recyclerViewRelatedResults.setAdapter(listFilmAdapter);
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+    }
     private void sendRequest() {
 //          "SELECT * FROM MOVIES WHERE mId = 0"
 //        mRequestQueue = Volley.newRequestQueue(this);
@@ -189,8 +241,17 @@ public class DetailActivity extends AppCompatActivity {
 
                     String video = set.getString("mUrlVideo");
                     wv.loadData(video,"text/html","utf-8");
-                    wv.getSettings().setJavaScriptEnabled(true);
+                    WebSettings webSettings= wv.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
                     wv.setWebChromeClient(new WebChromeClient());
+//                    MediaController mc = new MediaController(this);
+//                    Uri uri = Uri.parse(video);
+//                    mc.setAnchorView(vw);
+//                    vw.setMediaController(mc);
+//                    vw.setVideoURI(uri);
+//                    vw.requestFocus();
+//                    vw.start();
+
                 }
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -216,7 +277,7 @@ public class DetailActivity extends AppCompatActivity {
         //recyclerView = findViewById(R.id.imagesRecyclerView);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         wv = findViewById(R.id.mainVideo);
-
+        //vw = findViewById(R.id.mainVideo);
         //backImg.setOnClickListener(v -> finish());
 
     }
