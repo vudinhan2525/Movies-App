@@ -318,13 +318,101 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout786"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout125"
+                >
+                <TextView
+                    android:id="@+id/reviewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Review &amp; Rating"
+                    android:textColor="#ffc107"
+                    android:textSize="18sp"
+                    android:paddingTop="20dp"
+                    android:paddingLeft="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <ScrollView
+                    android:id="@+id/scrView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/reviewLabel" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/reviewList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="true"
+                            android:layout_marginTop="10dp"
+                            android:clipToPadding="false"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            />
 
+                    </LinearLayout>
+
+                </ScrollView>
+
+
+                <EditText
+                    android:id="@+id/editTextContentReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/rounded_edittext_bg"
+                    android:ems="10"
+                    android:hint="Write your review here..."
+                    android:paddingLeft="25dp"
+                    android:textColor="#cccccc"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:textColorHint="#cccccc"
+                    android:gravity="top"
+                    android:paddingTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/scrView"
+                    tools:layout_editor_absoluteX="15dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextContentReview">
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:progressTint="#ffc107"
+                        android:layout_width="240dp"
+                        android:layout_height="40dp">
+                    </RatingBar>
+                    <Button
+                        android:id="@+id/sendRatingBtn"
+                        android:layout_marginStart="50dp"
+                        android:layout_width="wrap_content"
+                        android:text="Rating"
+                        android:layout_height="50dp"/>
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout125">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout786">
                     <TextView
                         android:id="@+id/textViewLabel"
                         android:layout_width="match_parent"

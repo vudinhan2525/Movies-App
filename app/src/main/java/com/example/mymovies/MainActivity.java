@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initView();
+
         sendRequest1();
         sendRequest2();
         sendRequest3("Animation");
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.textViewLabel);
         if (db != null) {
             try {
-                String query = "SELECT TOP 10 * FROM Movies Order by mRating desc";
+                String query = "SELECT * FROM Movies Order by mRating desc";
                 Statement smt = connection.createStatement();
                 ResultSet set = smt.executeQuery(query);
                 filmList1 = new ArrayList<>();
@@ -222,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 recyclerViewNewMovies.setLayoutManager(linearLayoutManager);
                 recyclerViewNewMovies.setAdapter(listFilmAdapter);
             } catch (Exception ex) {
-                System.out.println(ex);
+                Log.e("erasd", "Unexpected Error: " + ex.getMessage(), ex);
             }
         }
     }
